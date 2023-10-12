@@ -1,0 +1,76 @@
+#addChild{
+    position: absolute;
+    right:0;
+    margin:3% 2%;
+    padding:5px 10px;
+    border-radius:15px;
+    background-color: aqua;
+}
+
+.fluid-container{
+    width:60%;
+    margin:100px auto 10px;
+
+}
+
+.edit{
+    background-color: green;
+}
+
+.delete{
+    background-color: red;
+}
+
+table {
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    margin: auto;
+    overflow: scroll;
+}
+
+/* Style table header */
+th {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style table rows */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Style table data cells */
+td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#searchInput{
+    padding:5px 10px;
+    border-radius:10px;
+    margin-bottom:5px;
+    float: right;
+}
+
+#pagination{
+    float:right;
+    margin-top:10px;
+}
+
+#entries{
+    float: left;
+    margin-top:10px;
+}
+
+#dialog{
+    position: absolute;
+    top:5rem;
+    left:1rem;
+    padding:10px;
+    border-radius: 10px;
+    background-color: rgb(92, 207, 92);
+
+}

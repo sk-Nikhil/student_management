@@ -1,0 +1,81 @@
+.form-container {
+    position: absolute;
+    top:2%;
+    left:50%;
+    transform: translate(-50%);
+    width:600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index:9999;
+}
+
+/* Style form labels */
+label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+/* Style form input fields */
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Style form submit button */
+#submit {
+    float:right;
+    padding: 10px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+#backdrop{
+    position: absolute;
+    top:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.error{
+    color:red
+}
+
+
+.header {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+#close{
+    position:absolute;
+    right:1%;
+    top:1%;
+    color:red;
+    border:1px solid grey;
+    padding:2px 4px;    
+}
+
+#close:hover{
+    cursor:pointer;
+}
+
+#dialog{
+    width:200px;
+    padding:10px;
+    background-color: rgb(92, 207, 92);
+    float:right;
+}
