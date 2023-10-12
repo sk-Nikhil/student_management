@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Style the footer */
+.footer {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px 2px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Style the footer links */
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Style the footer links on hover */
+.footer a:hover {
+    text-decoration: underline;
+}

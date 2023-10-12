@@ -1,0 +1,9 @@
+<div class="navbar">
+    <h3>Student Management</h3>
+    <div class="dropdown" *ngIf="isAuthenticated" >
+        <button class="dropdown-button" id="profile"></button>
+        <div class="dropdown-content">
+            <a routerLink="/" (click)="logout()">Logout</a>
+        </div>
+    </div>
+</div>
