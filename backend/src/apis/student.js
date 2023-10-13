@@ -1,6 +1,8 @@
 const express = require("express");
 const router = new express.Router();
-const Student = require("../models/student");
+const Student = require("../models/student")
+
+const verifyToken = require('../auth/verifyToken.js')
 
 router.post("/addStudent", async (req, res) => {
   const student = new Student({
@@ -35,7 +37,7 @@ router.get("/getStudentId", async (req, res) => {
 });
 
 
-router.get("/getStudents", async (req, res) => {
+router.get("/getStudents",verifyToken, async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
   const skip = (page - 1) * limit;
