@@ -2,6 +2,7 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import axios from 'axios';
 import { AxiosService } from 'src/services/axios.service';
 import { DataService } from 'src/services/data.service';
+import { RouterService } from 'src/services/router.service';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit{
     this.loadPage(page)
   }
 
-  constructor(private dataService:DataService, private axiosService:AxiosService){}
+  constructor(private dataService:DataService, private axiosService:AxiosService, private routerService:RouterService){}
 
   ngOnInit(){
     console.log("home")
@@ -60,7 +61,7 @@ export class HomeComponent implements OnInit{
       })
     }
     else{
-      this.dataService.getFilteredStudents(this.searchTerm, page)
+      this.routerService.getFilteredStudents(this.searchTerm, page)
       .then(response=>{
         console.log(response)
         this.students = response.students;
@@ -81,14 +82,6 @@ export class HomeComponent implements OnInit{
     this.loadPage(this.currentPage)
   }
   
-  async removeStudent(S_No:any){
-    // await axios.delete(`http://localhost:3000/removeStudent/${S_No}`)
-    await this.axiosService.delete(`/removeStudent/${S_No}`)
-    .then(()=>{
-      this.loadPage(this.currentPage)
-    })
-  }
-  
   showForm(){
     this.dataService.updateAddFormStatus(true)
   }
@@ -99,7 +92,17 @@ export class HomeComponent implements OnInit{
   }
 
   async onUpdateStudent(studentData){
+    console.log(studentData)
     await this.loadPage()
     this.students.push(studentData)
+  }
+
+
+  async removeStudent(S_No:any){
+    await this.routerService.removeStudent(S_No)
+    .then(()=>{
+      const index = this.students.findIndex((student)=>student.S_No === S_No)
+      this.students.splice(index, 1)
+    })
   }
 }

@@ -7,4 +7,4 @@ const generateToken = (payload) => {
     return token
 }
 
-module.exports = generateToken  
+module.exports = generateToken

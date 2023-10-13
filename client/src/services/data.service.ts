@@ -29,7 +29,6 @@ export class DataService {
 
     addStudent(data:any){
         this.students.push(data)
-        // this.getStudents()
     }
 
 
@@ -44,7 +43,6 @@ export class DataService {
 
     updateStudent(student:any){
         const index = this.students.findIndex((stud)=>student.S_No === stud.S_No)
-        
         this.students.splice(index, 1, student)        
     }
 
@@ -75,14 +73,4 @@ export class DataService {
         return {studentData, students:this.students}
     }
 
-
-    async getFilteredStudents(searchTerm,page){
-        let data
-        // await axios.get(`http://localhost:3000/filterSearch/${searchTerm}?page=${page}`)
-        await this.axiosService.get(`/filterSearch/${searchTerm}?page=${page}`)
-        .then(response=>{
-            data = response.data
-        })
-        return data
-    }
 }

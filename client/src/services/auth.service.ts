@@ -72,7 +72,7 @@ export class AuthService{
 
     logout(){
         this.router.navigate(['/'])
-        this.loggedIn = false 
+        // this.loggedIn = false 
         this.updateValidation(false)
         sessionStorage.removeItem('isLogged')   
         localStorage.removeItem('token')

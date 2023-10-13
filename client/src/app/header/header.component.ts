@@ -12,7 +12,7 @@ export class HeaderComponent{
   constructor(private dataService:DataService, private authService:AuthService, private router:Router, private route:ActivatedRoute){}
 
   isAuthenticated:boolean
-  buttonContent=''
+  buttonContent='Sign Up'
 
   ngOnInit(): void {    
     this.authService.isValidUser$.subscribe((isValidUser)=>{
