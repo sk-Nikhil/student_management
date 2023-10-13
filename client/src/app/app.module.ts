@@ -16,10 +16,12 @@ import { EditChildComponent } from './home/edit-child/edit-child.component';
 // import { DataService } from 'src/services/data.service';
 // import { AuthService } from 'src/services/auth.service';
 import { AuthGuard } from 'src/services/auth-guard.service';
+import { SignupComponent } from './signup/signup.component';
 
 const router:Routes=[
   {path:'', component:LoginComponent},
   {path:'login', component:LoginComponent},
+  {path:'signup', component:SignupComponent},
   {path:'home', component:HomeComponent, canActivate:[AuthGuard]}
 
   // {path:'**', redirectTo:'not-found'}
@@ -33,7 +35,8 @@ const router:Routes=[
     HomeComponent,
     AddChildComponent,
     PaginationComponent,
-    EditChildComponent
+    EditChildComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

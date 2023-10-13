@@ -15,7 +15,6 @@ export class AuthService{
     loggedIn = this.getStatus();
     getStatus()
     {
-        // const s = localStorage.getItem('isLogged');
         const s = sessionStorage.getItem('isLogged')
         if(s != undefined)
         {
@@ -26,8 +25,6 @@ export class AuthService{
         }
         else 
         {
-            // localStorage.setItem('isLogged', 'false');
-            // sessionStorage.setItem('isLogged', 'false')
             return false;
         }
 
@@ -44,28 +41,6 @@ export class AuthService{
         )
         return promise
     }
-
-    // async login(user){
-    //     await axios.post('http://localhost:3000/login', user).then((response)=>{
-    //         console.log(response.data)
-    //         if(response.data !== 'authorized'){
-    //             this.loggedIn = false;
-    //             localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
-
-    //             this.updateValidation(false)
-    //         }
-    //         else{
-    //             this.loggedIn = true
-    //             this.isValidUser.next(true)
-    //             localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
-
-    //             this.router.navigate(['/home'])
-    //             this.updateValidation(true)
-    //         }
- 
-
-    //     })
-    // }
 
     async login(user){
         await axios.post('http://localhost:3000/login', user).then((response)=>{
@@ -86,7 +61,6 @@ export class AuthService{
             }
             else{
                 this.loggedIn = false;
-                // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
                 sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
                 this.updateValidation(false)
             }
@@ -98,10 +72,10 @@ export class AuthService{
 
     logout(){
         this.router.navigate(['/'])
-        this.loggedIn = false
-        // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
-        // sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn));  
+        this.loggedIn = false 
+        this.updateValidation(false)
         sessionStorage.removeItem('isLogged')   
+        localStorage.removeItem('token')
         
     }
 
