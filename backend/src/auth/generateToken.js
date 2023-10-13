@@ -1,9 +1,9 @@
 const secretKey = 'thisisthefirsttokeniammakingformyproject'
 const jwt = require('jsonwebtoken')
 
-const generateToken = (user) => {
-    const {username, type} = {...user}
-    const token = jwt.sign({username, type},secretKey, { expiresIn: '1h' });
+const generateToken = (payload) => {
+    const user = {username:payload.username, type:payload.type}
+    const token = jwt.sign(user,secretKey, { expiresIn: '1h' });
     return token
 }
 
