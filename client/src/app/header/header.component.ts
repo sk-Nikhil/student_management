@@ -16,6 +16,7 @@ export class HeaderComponent{
   ngOnInit(): void {    
     this.authService.isValidUser$.subscribe((isValidUser)=>{
       this.isAuthenticated = isValidUser
+      // this.isAuthenticated = localStorage.getItem('isLogged') === 'true' ? true : false
     })
   }
 

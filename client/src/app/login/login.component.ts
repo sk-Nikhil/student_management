@@ -18,9 +18,6 @@ export class LoginComponent implements OnInit{
   isValid:boolean=true
 
   ngOnInit(){
-    if(this.isValid){
-      console.log()
-    }
   }
 
   async login(){
@@ -34,7 +31,7 @@ export class LoginComponent implements OnInit{
     this.authService.isValidUser$.subscribe((isValidUser)=>{
       this.isValid = isValidUser
     })
-    localStorage.setItem('isAuthenticated',this.isValid.toString())
+    // localStorage.setItem('isAuthenticated',this.isValid.toString())
     
     this.username = ''
     this.password = ''
