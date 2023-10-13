@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/services/data.service';
 import axios from 'axios'
+import { AxiosService } from 'src/services/axios.service';
 
 @Component({
   selector: 'app-edit-child',
@@ -15,7 +16,7 @@ export class EditChildComponent implements OnInit{
 
   @Input('editStudent') student
 
-  constructor(private fb: FormBuilder, private dataService:DataService){}
+  constructor(private fb: FormBuilder, private dataService:DataService, private axiosService:AxiosService){}
 
   ngOnInit(){
     this.dataService.canEdit$.subscribe((canEdit)=>{
@@ -36,7 +37,8 @@ export class EditChildComponent implements OnInit{
     if(this.studentForm.valid){
       console.log("valid")
       const student = {...this.student,...this.studentForm.value,}
-      await axios.patch('http://localhost:3000/updateStudent', student)
+      // await axios.patch('http://localhost:3000/updateStudent', student)
+      await this.axiosService.patch('/updateStudent', student)
       .then((response)=>{
 
         this.dataService.updateStudent(student)

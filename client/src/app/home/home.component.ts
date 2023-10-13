@@ -1,5 +1,6 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import axios from 'axios';
+import { AxiosService } from 'src/services/axios.service';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -27,9 +28,10 @@ export class HomeComponent implements OnInit{
     this.loadPage(page)
   }
 
-  constructor(private dataService:DataService){}
+  constructor(private dataService:DataService, private axiosService:AxiosService){}
 
   ngOnInit(){
+    console.log("home")
     this.dataService.canEdit$.subscribe((canEdit)=>{
       this.editForm = canEdit
     })
@@ -51,7 +53,7 @@ export class HomeComponent implements OnInit{
       this.dataService.getStudents(page)
       .then((response)=>{
         this.students = response.students;
-        console.log(this.students)
+        // console.log(this.students)
         this.currentPage = response.studentData.currentPage
         this.totalPages = response.studentData.totalPages
         this.totalEntries = response.studentData.totalEntries
@@ -80,7 +82,8 @@ export class HomeComponent implements OnInit{
   }
   
   async removeStudent(S_No:any){
-    await axios.delete(`http://localhost:3000/removeStudent/${S_No}`)
+    // await axios.delete(`http://localhost:3000/removeStudent/${S_No}`)
+    await this.axiosService.delete(`/removeStudent/${S_No}`)
     .then(()=>{
       this.loadPage(this.currentPage)
     })

@@ -1,8 +1,15 @@
-import { EventEmitter, OnInit } from "@angular/core"
+import { EventEmitter, Injectable, OnInit } from "@angular/core"
 import axios from "axios"
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { AxiosService } from "./axios.service";
+
+@Injectable({
+    providedIn:'root'
+})
 
 export class DataService {
+
+    constructor( private axiosService:AxiosService){}
 
     private canAdd = new BehaviorSubject<boolean>(false);
     canAdd$ = this.canAdd.asObservable();
@@ -60,7 +67,7 @@ export class DataService {
 
     async getStudents(page){
         let studentData
-        await axios.get(`http://localhost:3000/getStudents?page=${page}`)
+        await this.axiosService.get(`/getStudents?page=${page}`)
         .then((response)=>{
             studentData = response.data
             this.students = response.data.students
@@ -71,7 +78,8 @@ export class DataService {
 
     async getFilteredStudents(searchTerm,page){
         let data
-        await axios.get(`http://localhost:3000/filterSearch/${searchTerm}?page=${page}`)
+        // await axios.get(`http://localhost:3000/filterSearch/${searchTerm}?page=${page}`)
+        await this.axiosService.get(`/filterSearch/${searchTerm}?page=${page}`)
         .then(response=>{
             data = response.data
         })

@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { DataService } from 'src/services/data.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import axios from 'axios'
+import { AxiosService } from 'src/services/axios.service';
 
 @Component({
   selector: 'app-add-child',
@@ -12,7 +13,7 @@ export class AddChildComponent{
   studentForm: FormGroup;
   @Output() updateStudent = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private dataService:DataService){
+  constructor(private fb: FormBuilder, private dataService:DataService, private axiosService:AxiosService){
     this.studentForm = this.fb.group({
       name: ['', Validators.required],
       parent: ['', Validators.required],
@@ -34,7 +35,8 @@ export class AddChildComponent{
     if(this.studentForm.valid){
       let id=0 
 
-      await axios.get('http://localhost:3000/getStudentId')
+      // await axios.get('http://localhost:3000/getStudentId')
+      await this.axiosService.get('/getStudentId')
       .then((response)=>{
         console.log(response)
         id = response.data
@@ -42,7 +44,9 @@ export class AddChildComponent{
       
       const studentData = {S_No:id,...this.studentForm.value};
       // adding to database
-      await axios.post('http://localhost:3000/addStudent', studentData).then(()=>{
+      // await axios.post('http://localhost:3000/addStudent', studentData)
+      await this.axiosService.post('/addStudent', studentData)
+      .then(()=>{
         // this.dataService.addStudent(studentData)
         this.updateStudent.emit(studentData)
       })

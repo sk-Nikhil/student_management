@@ -15,7 +15,7 @@ export class AxiosService {
       (config) => {
         const token = localStorage.getItem('token');
         if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`;
+          config.headers['Authorization'] = `${token}`;
         }
         return config;
       },
@@ -33,4 +33,11 @@ export class AxiosService {
     return this.axiosInstance.post(url, data);
   }
 
+  patch(url: string, data: any) {
+    return this.axiosInstance.patch(url, data)
+  }
+
+  delete(url :string) {
+    return this.axiosInstance.delete(url)
+  }
 }

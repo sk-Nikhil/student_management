@@ -68,22 +68,26 @@ export class AuthService{
     // }
 
     async login(user){
-        await this.axiosService.post('/login', user).then((response)=>{
-            console.log(response.data)
-            if(response.data !== 'authorized'){
+        await axios.post('http://localhost:3000/login', user).then((response)=>{
+            const token = response.data
+            if(token){
+                this.loggedIn = true
+                this.isValidUser.next(true)
+                // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
+                sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
+
+                // adding token to ls
+                localStorage.setItem('token', token)     
+
+                this.router.navigate(['/home'])
+                this.updateValidation(true)
+
+            }
+            else{
                 this.loggedIn = false;
                 // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
                 sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
                 this.updateValidation(false)
-            }
-            else{
-                this.loggedIn = true
-                this.isValidUser.next(true)
-                // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
-                sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn));      
-
-                this.router.navigate(['/home'])
-                this.updateValidation(true)
             }
  
 

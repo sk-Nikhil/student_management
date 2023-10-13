@@ -13,8 +13,8 @@ import { AddChildComponent } from './home/add-child/add-child.component';
 import { PaginationComponent } from './home/pagination/pagination.component';
 import { EditChildComponent } from './home/edit-child/edit-child.component';
 
-import { DataService } from 'src/services/data.service';
-import { AuthService } from 'src/services/auth.service';
+// import { DataService } from 'src/services/data.service';
+// import { AuthService } from 'src/services/auth.service';
 import { AuthGuard } from 'src/services/auth-guard.service';
 
 const router:Routes=[
@@ -42,7 +42,7 @@ const router:Routes=[
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [DataService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
