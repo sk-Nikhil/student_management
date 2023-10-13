@@ -70,6 +70,7 @@ export class AuthService{
     async login(user){
         await axios.post('http://localhost:3000/login', user).then((response)=>{
             const token = response.data
+            console.log("token",token)
             if(token){
                 this.loggedIn = true
                 this.isValidUser.next(true)

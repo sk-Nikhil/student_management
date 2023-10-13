@@ -11,7 +11,7 @@ router.post('/login', async(req,res)=>{
     try{
         const user = await User.findOne({username:username})
         if(!user){
-            res.send("not-authorized")
+            res.send()
             return
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
