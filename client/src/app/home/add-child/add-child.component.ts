@@ -35,6 +35,7 @@ export class AddChildComponent{
   async addStudent(){
     if(this.studentForm.valid){
       const id = await this.routerService.getStudentId()
+      
       await this.routerService.addStudent(id, this.studentForm.value)
       .then(()=>{
         this.updateStudent.emit({S_No : id,...this.studentForm.value})
