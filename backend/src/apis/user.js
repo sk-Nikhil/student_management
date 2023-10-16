@@ -3,25 +3,27 @@ const router = express.Router()
 const User = require('../models/user.js')
 const bcrypt = require('bcryptjs')
 
+const generateToken = require('../auth/generateToken.js')
+
 router.post('/login', async(req,res)=>{
-    console.log(req.body)
     const {username, password} = {...req.body}
 
     try{
         const user = await User.findOne({username:username})
         if(!user){
-            res.send("not-authorized")
+            res.send()
             return
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
-
+        let token
         if (isPasswordValid) {
-            console.log("authorized")   
-            res.send("authorized")
+            console.log("authorized")
+            token = generateToken(user)
+            res.send(token)
         }
         else {
             console.log("unauthorized")
-            res.send('not-authorized');
+            res.send();
         }
     }
     catch(e){
@@ -53,7 +55,7 @@ router.post('/addUser', async(req,res)=>{
             // Handle error
             } else {
                 user = new User({
-                    username:username, password:hash
+                    username:username, password:hash, type:'admin'
                 })
 
                 try{

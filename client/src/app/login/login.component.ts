@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import axios from 'axios';
 import { DataService } from 'src/services/data.service';
-import * as bcrypt from 'bcryptjs';
 import { AuthService } from 'src/services/auth.service';
 
 @Component({
@@ -18,9 +16,6 @@ export class LoginComponent implements OnInit{
   isValid:boolean=true
 
   ngOnInit(){
-    if(this.isValid){
-      console.log()
-    }
   }
 
   async login(){
@@ -34,10 +29,16 @@ export class LoginComponent implements OnInit{
     this.authService.isValidUser$.subscribe((isValidUser)=>{
       this.isValid = isValidUser
     })
-    localStorage.setItem('isAuthenticated',this.isValid.toString())
+    // localStorage.setItem('isAuthenticated',this.isValid.toString())
     
     this.username = ''
     this.password = ''
+  }
+
+  checkInputValidation(){
+    if(!this.username || !this.password) {
+      this.isValid = true
+    }
   }
 
 }

@@ -9,19 +9,4 @@ import { AuthService } from 'src/services/auth.service';
 })
 export class AppComponent {
   title = 'client';
-
-  constructor(private authService: AuthService, private router:Router) {
-    router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        if (!this.shouldAllowNavigation()) {
-          // event.preventDefault();
-          
-        }
-      }
-    });
-  }
-
-  shouldAllowNavigation(): boolean {
-    return true; // Return true to allow navigation, or false to cancel it
-  }
 }
