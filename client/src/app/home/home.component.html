@@ -1,0 +1,50 @@
+<button id="addChild" (click)="showForm()">Add Child</button>
+
+<div class="fluid-container">
+    <input type="text" id="searchInput" [(ngModel)]="searchTerm" placeholder="Search..." (input)="search()">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Name</th>
+                <th>Parent Name</th>
+                <th>Class</th>
+                <th>Address</th>
+                <th>Contact</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let student of students ; let i = index">
+                <td>{{student.S_No}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.parent}}</td>
+                <td>{{student.class}}</td>
+                <td>{{student.address}}</td>
+                <td>{{student.contact}}</td>
+                <td>
+                    <button class="btn btn-success" (click)="editStudent(student)">Edit</button>
+                    <button class="btn btn-danger" style="margin: 0 5px;" (click)="removeStudent(student.S_No)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="entries" *ngIf="!searchTerm">
+        <div >total entries : {{totalEntries}}</div>
+        <div >showing : {{students.length}}</div>
+    </div>
+    
+    <app-pagination id="pagination"
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+
+    <div id="dialog" *ngIf="showAddDialog">student added successfully</div>
+    <div id="dialog" *ngIf="showEditDialog">student data updated successfully</div>
+</div>
+
+<app-add-child (updateStudent)="onUpdateStudent($event)"></app-add-child>
+
+<app-edit-child *ngIf="editForm" [editStudent]="editStud"></app-edit-child>

@@ -1,0 +1,86 @@
+
+<div *ngIf="showForm">
+  <div id="backdrop" (click)="hideForm()"></div>
+
+  <div class="form-container">
+    <div id="close" (click)="hideForm()">close</div>
+
+    <div class="header">
+      <h1>Add Student</h1>
+    </div>
+
+    <form [formGroup]="studentForm" (ngSubmit)="addStudent()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" formControlName="name" />
+        <p
+          *ngIf="
+            studentForm.get('name').hasError('required') &&
+            studentForm.get('name')?.touched
+          "
+          class="error"
+        >
+          Name is required.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="parent">Parent Name</label>
+        <input type="text" id="parent" formControlName="parent" />
+        <p
+          *ngIf="
+            studentForm.get('parent').hasError('required') &&
+            studentForm.get('parent')?.touched
+          "
+          class="error"
+        >
+          Parent Name is required.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="class">Class</label>
+        <input type="text" id="class" formControlName="class" />
+        <p
+          *ngIf="
+            studentForm.get('class').hasError('required') &&
+            studentForm.get('class')?.touched
+          "
+          class="error"
+        >
+          Class is required.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" id="address" formControlName="address" />
+      </div>
+
+      <div class="form-group">
+        <label for="contact">Contact</label>
+        <input type="text" id="contact" formControlName="contact" />
+        <p
+          *ngIf="
+            studentForm.get('contact').hasError('required') &&
+            studentForm.get('contact')?.touched
+          "
+          class="error"
+        >
+          Contact is required.
+        </p>
+        <div
+          *ngIf="
+            studentForm.get('contact').hasError('pattern') &&
+            studentForm.get('contact')?.touched
+          "
+          class="error"
+        >
+          Contact must be a valid number.
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="studentForm.invalid" id="submit">Submit</button>
+    </form>
+  </div>
+</div>
