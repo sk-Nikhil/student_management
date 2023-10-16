@@ -1,7 +1,7 @@
 #addChild{
     position: absolute;
     right:0;
-    margin:3% 2%;
+    margin:2% 2%;
     padding:5px 10px;
     border-radius:15px;
     background-color: aqua;
@@ -74,3 +74,16 @@ td {
     background-color: rgb(92, 207, 92);
 
 }
+
+
+/* download */
+.download-button {
+    display: flex;
+    align-items: center;
+    /* color: white; */
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 8px;
+  }

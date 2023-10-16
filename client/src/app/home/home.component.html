@@ -22,9 +22,12 @@
                 <td>{{student.class}}</td>
                 <td>{{student.address}}</td>
                 <td>{{student.contact}}</td>
-                <td>
+                <td style="display: flex;">
                     <button class="btn btn-success" (click)="editStudent(student)">Edit</button>
                     <button class="btn btn-danger" style="margin: 0 5px;" (click)="removeStudent(student.S_No)">Delete</button>
+                    <button (click)="downloadRecordAsPDF(student)" class="download-button">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
                 </td>
             </tr>
         </tbody>

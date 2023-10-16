@@ -101,4 +101,56 @@ export class HomeComponent implements OnInit{
     this.loadPage()
   }
 
+
+
+
+
+
+  downloadRecord(record: any) {
+    const data = JSON.stringify(record);
+    console.log(data)
+    const blob = new Blob([data], { type: 'application/json' });
+
+    // Create a temporary URL for the blob
+    const url = window.URL.createObjectURL(blob);
+
+    // Create a link element and trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'record.pdf'; // Set the desired file name
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  }
+
+
+
+  downloadRecordAsPDF(record) {
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+    const docDefinition = {
+      content: [
+        { text: 'Record Details', style: 'header' },
+        { text: 'Student Id: ' + record.S_No },
+        { text: 'Name: ' + record.name },
+        { text: 'Parent Name: ' + record.parent },
+        { text: 'class: ' + record.class },
+        { text: 'Address: ' + record.address },
+        { text: 'Contact: ' + record.contact },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+        },
+      },
+    };
+
+    const pdfDoc = pdfMake.createPdf(docDefinition);
+    pdfDoc.download(`${record.name}_${record.S_No}.pdf`);
+  }
+
 }
