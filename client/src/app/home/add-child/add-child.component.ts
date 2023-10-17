@@ -1,8 +1,6 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter} from '@angular/core';
 import { DataService } from 'src/services/data.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import axios from 'axios'
-import { AxiosService } from 'src/services/axios.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterService } from 'src/services/router.service';
 
 @Component({
@@ -14,7 +12,7 @@ export class AddChildComponent{
   studentForm: FormGroup;
   @Output() updateStudent = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private dataService:DataService, private axiosService:AxiosService, private routerService:RouterService){
+  constructor(private fb: FormBuilder, private dataService:DataService, private routerService:RouterService){
     this.studentForm = this.fb.group({
       name: ['', Validators.required],
       parent: ['', Validators.required],
@@ -24,36 +22,27 @@ export class AddChildComponent{
     });
   }
 
-  showForm:any
-
-  ngDoCheck(){
-    this.dataService.canAdd$.subscribe((canAdd)=>{
-      this.showForm = canAdd
-    })
-  }
-
   async addStudent(){
     if(this.studentForm.valid){
       this.routerService.addStudent(this.studentForm.value)
       .then((response)=>{
         if(response === 201) {
-          this.updateStudent.emit({...this.studentForm.value})
-          this.showDialog()
-          this.hideForm()
+          this.showDialog("student added successfully");
+          this.hideForm();
         }
       })
     }
   }
 
-  showDialog(){
-    this.dataService.updateAddDialogStatus(true)
+  showDialog(data:String){
+    this.dataService.updateModal(true, data);
     setTimeout(()=>{
-      this.dataService.updateAddDialogStatus(false)
+      this.dataService.updateModal(false, '')
     },2000)
   }
 
   hideForm(){
-    this.dataService.updateAddFormStatus(false)
+    this.dataService.updateAddFormStatus(false);
     this.studentForm.reset();
   }
 }

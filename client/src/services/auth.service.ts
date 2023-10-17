@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import axios from 'axios'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-
 import { AxiosService } from './axios.service';
 
 @Injectable({
@@ -24,9 +23,7 @@ export class AuthService{
                 return false;
         }
         else 
-        {
             return false;
-        }
 
     }
 
@@ -35,49 +32,47 @@ export class AuthService{
 
     isAuthenticated(){
         const promise = new Promise(
-            (resolve, reject)=>{
-                resolve(this.loggedIn)
+            (resolve)=>{
+                resolve(this.loggedIn);
             }
         )
-        return promise
+        return promise;
     }
 
-    async login(user){
+    async login(user:any){
+        let token:string;
         await axios.post('http://localhost:3000/login', user).then((response)=>{
             if(response.data.token){
-                const token = response.data.token
-                this.loggedIn = true
+                token = response.data.token;
+                this.loggedIn = true;
                 sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
-                localStorage.setItem('token', token)     
-                this.router.navigate(['/home'], {replaceUrl:false})
-                this.updateValidation(true)
-
+                localStorage.setItem('token', token);
+                this.router.navigate(['/home'], {replaceUrl:true});
+                this.updateValidation(true);
             }
             else{
                 this.loggedIn = false;  
-                this.updateValidation(false)
+                this.updateValidation(false);
             }
- 
-
         })
+        if(token){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
-
     logout(){
-        this.router.navigate(['/'])
-        // this.loggedIn = false 
-        this.updateValidation(false)
-        sessionStorage.removeItem('isLogged')   
-        localStorage.removeItem('token')
+        this.router.navigate(['/']);
+        this.updateValidation(false);
+        sessionStorage.removeItem('isLogged');   
+        localStorage.removeItem('token');
         
     }
 
-    getUserValidation(){
-        return this.isValidUser
-    }
-
-    updateValidation(data){
-        this.isValidUser.next(data)
+    updateValidation(data:boolean){
+        this.isValidUser.next(data);
     }
 
 }

@@ -7,7 +7,7 @@ import { RouterService } from 'src/services/router.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit{
+export class SignupComponent{
   signupForm: FormGroup;
   signupError:String = ''
 
@@ -18,18 +18,11 @@ export class SignupComponent implements OnInit{
     });
   }
 
-  ngOnInit(){
-    this.routerService.signupError$.subscribe((data)=>{
-      this.signupError = data
-    })
-  }
-
-
-  onSubmit(){
+  async onSubmit(){
     if(this.signupForm.valid) {
       const userData = this.signupForm.value;
       this.signupForm.reset()
-      this.routerService.signup(userData)
+      this.signupError = await this.routerService.signup(userData)
     }
   }
 

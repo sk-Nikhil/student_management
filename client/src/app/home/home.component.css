@@ -13,6 +13,11 @@
 
 }
 
+.responsive{
+    display: flex;
+    justify-content: center;
+}
+
 .edit{
     background-color: green;
 }

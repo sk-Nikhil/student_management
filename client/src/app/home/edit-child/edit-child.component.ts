@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/services/data.service';
-import axios from 'axios'
-import { AxiosService } from 'src/services/axios.service';
 import { RouterService } from 'src/services/router.service';
 
 @Component({
@@ -11,19 +9,12 @@ import { RouterService } from 'src/services/router.service';
   styleUrls: ['./edit-child.component.css']
 })
 export class EditChildComponent implements OnInit{
-
   studentForm: FormGroup;
-  editForm:boolean=false
+  @Input('editStudent') student:any;
 
-  @Input('editStudent') student
-
-  constructor(private fb: FormBuilder, private dataService:DataService, private axiosService:AxiosService, private routerService:RouterService){}
+  constructor(private fb: FormBuilder, private dataService:DataService, private routerService:RouterService){}
 
   ngOnInit(){
-    this.dataService.canEdit$.subscribe((canEdit)=>{
-      this.editForm = canEdit
-    })
-
     this.studentForm = this.fb.group({
       name: new FormControl({ value: `${this.student.name}`, disabled: true }),
       parent: new FormControl({ value: `${this.student.parent}`, disabled: true }),
@@ -33,32 +24,31 @@ export class EditChildComponent implements OnInit{
     });
   }
 
-
   async submitForm(){
     if(this.studentForm.valid){
-      const student = {...this.student,...this.studentForm.value}
+      const student = {...this.student,...this.studentForm.value};
       this.routerService.updateStudent(student)
       .then(response=>{
         if(response === 201) {
-          this.editDialog("student data updated successfully")
+          this.editDialog("student data updated successfully");
         }
         else{
-          this.editDialog("failed to update student data")
+          this.editDialog("failed to update student data");
         }
       })
     }
-    this.hideForm()
+    this.hideForm();
   }
 
-  editDialog(data){
-    this.dataService.updateEditDialogStatus(true, data)
+  editDialog(data:String){
+    this.dataService.updateModal(true, data);
     setTimeout(()=>{
-      this.dataService.updateEditDialogStatus(false, '')
-    },2000)
+      this.dataService.updateModal(false, '')
+    },2000);
   }
 
   hideForm(){
     this.studentForm.reset();
-    this.dataService.updateEditFormStatus(false)
+    this.dataService.updateEditFormStatus(false);
   }
 }

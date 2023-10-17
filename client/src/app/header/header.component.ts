@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
-import { DataService } from 'src/services/data.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +8,7 @@ import { DataService } from 'src/services/data.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent{
-  constructor(private dataService:DataService, private authService:AuthService, private router:Router, private route:ActivatedRoute){}
+  constructor(private authService:AuthService, private router:Router){}
 
   isAuthenticated:boolean
   buttonContent='Sign Up'
@@ -41,7 +40,6 @@ export class HeaderComponent{
   }
 
   logout(){
-    // this.authService.updateValidation(false)
     this.authService.logout()
   }
 
