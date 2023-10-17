@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 
 const studentSchema = new mongoose.Schema({
-    S_No: {
-        type: Number,
-        required: true,
-        autoIncrement:true
-    },
     name:{
         type:String,
         required:true,

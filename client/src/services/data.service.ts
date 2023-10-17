@@ -20,7 +20,7 @@ export class DataService {
     private showAddDialog = new BehaviorSubject<boolean>(false);
     showAddDialog$ = this.showAddDialog.asObservable();
 
-    private showEditDialog = new BehaviorSubject<boolean>(false);
+    private showEditDialog = new BehaviorSubject<any>({show:false, msg:''});
     showEditDialog$ = this.showEditDialog.asObservable();
 
     students:any=[]
@@ -58,8 +58,8 @@ export class DataService {
         this.showAddDialog.next(data)
     }
 
-    updateEditDialogStatus(data){
-        this.showEditDialog.next(data)
+    updateEditDialogStatus(data, text){
+        this.showEditDialog.next({show:data, msg:text})
     }
 
 

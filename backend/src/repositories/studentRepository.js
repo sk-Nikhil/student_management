@@ -1,8 +1,8 @@
 const Student = require('../models/student.js')
 
-async function addStudent(req){
+async function addStudent(studentData){
     try{
-        const student = new Student({...req.body});
+        const student = new Student(studentData);
         return await student.save();
     }
     catch(e){
@@ -41,7 +41,7 @@ async function filteredStudents(searchQuery, skip, limit){
 
 async function deleteStudent(id){
     try{
-        return await Student.deleteOne({ S_No: id });
+        return await Student.deleteOne({ _id: id });
     }
     catch(e){
         throw Error("Error while deleting a student record");
@@ -51,7 +51,7 @@ async function deleteStudent(id){
 async function updateStudent(data){
     try{
         await Student.findOneAndUpdate(
-            { S_No: data.S_No },
+            { _id: data._id },
             { class: data.class, address:data.address, contact:data.contact }
         );
         return;

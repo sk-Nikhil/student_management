@@ -5,6 +5,12 @@ const dotenv = require('dotenv')
 const router = require('./router.js')
 require('./db/mongoose')
 
+// const passport = require('passport-local')
+// const initiliazePassport = require('./passport-config.js')
+// initiliazePassport(
+//     passport
+//     );
+
 dotenv.config()
 app.use(cors());
 app.use(express.json());

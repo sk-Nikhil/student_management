@@ -5,9 +5,11 @@ const tokenVerified = (req, res, next) => {
     const token = req.headers.authorization
     try{
         const decodedToken = jwt.verify(token, secretKey)
-        if(decodedToken.type){
-            console.log("token verified")
+        if(decodedToken.type === 'admin'){
             next()
+        }
+        else{
+            router.push('/signup')
         }
     }
     catch(e){

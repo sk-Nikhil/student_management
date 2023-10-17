@@ -16,7 +16,9 @@ export class HomeComponent implements OnInit{
 
   showAddDialog:boolean
   showEditDialog:boolean
+  editMsg=''
 
+// pagination
   currentPage = 1;
   totalPages=1
   totalEntries=0
@@ -26,6 +28,9 @@ export class HomeComponent implements OnInit{
   editStud=null
   
   students:any=[]
+
+// to filter records
+  searchTerm:''
   
   onPageChange(page: number) {
     this.loadPage(page)
@@ -34,6 +39,8 @@ export class HomeComponent implements OnInit{
   constructor(private dataService:DataService, private axiosService:AxiosService, private routerService:RouterService){}
 
   ngOnInit(){
+    this.loadPage()
+
     this.dataService.canEdit$.subscribe((canEdit)=>{
       this.editForm = canEdit
     })
@@ -43,11 +50,9 @@ export class HomeComponent implements OnInit{
     })
 
     this.dataService.showEditDialog$.subscribe((editDialog)=>{
-      this.showEditDialog = editDialog
+      this.showEditDialog = editDialog.show
+      this.editMsg = editDialog.msg
     })
-
-    this.loadPage()
-
   }
 
   loadPage(page=this.currentPage){
@@ -63,19 +68,12 @@ export class HomeComponent implements OnInit{
     else{
       this.routerService.getFilteredStudents(this.searchTerm, page)
       .then(response=>{
-        console.log(response)
         this.students = response.students;
         this.currentPage = response.currentPage
-        // this.totalPages = response.studentData.totalPages
         this.dataFound = this.students.length
     })
     }
   }
-
-  searchTerm:''
-  filteredData: any=[];
-
- 
 
   search() {
     this.currentPage=1
@@ -91,42 +89,15 @@ export class HomeComponent implements OnInit{
     this.dataService.updateEditFormStatus(true)
   }
 
-  async onUpdateStudent(studentData){
+  async onUpdateStudent(){
     this.loadPage()  
   }
 
 
-  async removeStudent(S_No:any){
-    await this.routerService.removeStudent(S_No)
+  async removeStudent(id:any){
+    await this.routerService.removeStudent(id)
     this.loadPage()
   }
-
-
-
-
-
-
-  downloadRecord(record: any) {
-    const data = JSON.stringify(record);
-    console.log(data)
-    const blob = new Blob([data], { type: 'application/json' });
-
-    // Create a temporary URL for the blob
-    const url = window.URL.createObjectURL(blob);
-
-    // Create a link element and trigger the download
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'record.pdf'; // Set the desired file name
-    document.body.appendChild(a);
-    a.click();
-
-    // Clean up
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-  }
-
-
 
   downloadRecordAsPDF(record) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;

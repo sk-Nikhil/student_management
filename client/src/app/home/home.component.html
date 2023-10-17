@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let student of students ; let i = index">
-                <td>{{currentPage*5 + i}}</td>
+                <td>{{(currentPage-1)*5 + i+1}}</td>
                 <td>{{student.name}}</td>
                 <td>{{student.parent}}</td>
                 <td>{{student.class}}</td>
@@ -24,7 +24,7 @@
                 <td>{{student.contact}}</td>
                 <td style="display: flex;">
                     <button class="btn btn-success" (click)="editStudent(student)">Edit</button>
-                    <button class="btn btn-danger" style="margin: 0 5px;" (click)="removeStudent(student.S_No)">Delete</button>
+                    <button class="btn btn-danger" style="margin: 0 5px;" (click)="removeStudent(student._id)">Delete</button>
                     <button (click)="downloadRecordAsPDF(student)" class="download-button">
                         <i class="fa-solid fa-download"></i>
                     </button>
@@ -45,9 +45,9 @@
     ></app-pagination>
 
     <div id="dialog" *ngIf="showAddDialog">student added successfully</div>
-    <div id="dialog" *ngIf="showEditDialog">student data updated successfully</div>
+    <div id="dialog" *ngIf="showEditDialog">{{editMsg}}</div>
 </div>
 
-<app-add-child (updateStudent)="onUpdateStudent($event)"></app-add-child>
+<app-add-child (updateStudent)="onUpdateStudent()"></app-add-child>
 
 <app-edit-child *ngIf="editForm" [editStudent]="editStud"></app-edit-child>

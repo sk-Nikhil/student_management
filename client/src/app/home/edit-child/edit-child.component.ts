@@ -37,16 +37,23 @@ export class EditChildComponent implements OnInit{
   async submitForm(){
     if(this.studentForm.valid){
       const student = {...this.student,...this.studentForm.value}
-      await this.routerService.updateStudent(student)
+      this.routerService.updateStudent(student)
+      .then(response=>{
+        if(response === 201) {
+          this.editDialog("student data updated successfully")
+        }
+        else{
+          this.editDialog("failed to update student data")
+        }
+      })
     }
-    this.editDialog()
     this.hideForm()
   }
 
-  editDialog(){
-    this.dataService.updateEditDialogStatus(true)
+  editDialog(data){
+    this.dataService.updateEditDialogStatus(true, data)
     setTimeout(()=>{
-      this.dataService.updateEditDialogStatus(false)
+      this.dataService.updateEditDialogStatus(false, '')
     },2000)
   }
 

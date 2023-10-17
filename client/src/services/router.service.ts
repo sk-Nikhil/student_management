@@ -18,76 +18,37 @@ export class RouterService{
     private signupError = new Subject<String>();
     signupError$ = this.signupError.asObservable();
 
-
-
     // add User
     async signup(user:any){
-        console.log("signup")
-        await axios.post(`${this.baseurl}/addUser`, user)
+      const res=   await axios.post(`${this.baseurl}/addUser`, user)
         .then(response => {
             if(response.status === 201 && response.data === 'success'){
                 this.router.navigate(['/login'])
                 return
             }
             else if(response.data === 'user-exists'){
-                console.log(response)
                 this.signupError.next('user already exists, please login!')
-                // this.signupError = 'user already exists, please login!'
             }
             else{
                 this.signupError.next('Internal server error! please try again later')
-                // this.signupError = 'Internal server error!'
             }
         })
     }
 
-
-
-    // async login(user){
-    //     await axios.post('http://localhost:3000/login', user).then((response)=>{
-    //         const token = response.data
-    //         console.log("token",token)
-    //         if(token){
-    //             this.loggedIn = true
-    //             this.isValidUser.next(true)
-    //             // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
-    //             sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
-
-    //             // adding token to ls
-    //             localStorage.setItem('token', token)     
-
-    //             this.router.navigate(['/home'])
-    //             this.updateValidation(true)
-
-    //         }
-    //         else{
-    //             this.loggedIn = false;
-    //             sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
-    //             this.updateValidation(false)
-    //         }
- 
-
-    //     })
-    // }
-
-
-    async getStudentId(){
-        let id=0 
-        await this.axiosService.get('/getStudentId')
-        .then((response)=>{
-          id = response.data
-        })
-        return id
-    }
-
-    async addStudent(id,studentData){
-      const student = {S_No:id,...studentData};
+    async addStudent(studentData){
+      const student = {...studentData};
+      var res
+      
       await this.axiosService.post('/addStudent', student)
+      .then(response => {
+            console.log("added successfully")
+            res = response.status
+      })
+      return res
     }
-
 
     async getFilteredStudents(searchTerm,page){
-        let data
+        let data:any
         await this.axiosService.get(`/filterSearch/${searchTerm}?page=${page}`)
         .then(response=>{
             data = response.data
@@ -95,18 +56,21 @@ export class RouterService{
         return data
     }
 
-
-    async removeStudent(S_No:any){
-        await this.axiosService.delete(`/removeStudent/${S_No}`)
+    async removeStudent(id:any){
+        await this.axiosService.delete(`/removeStudent/${id}`)
         .then(()=>{
             return "removed"
         })
     }
 
-    async updateStudent(student){
+    async updateStudent(student:any){
+        var res
         await this.axiosService.patch('/updateStudent', student)
-      .then(()=>{
+      .then((response)=>{
+        res = response.status
         this.dataService.updateStudent(student)
       })
+
+      return res
     }
 }

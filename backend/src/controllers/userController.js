@@ -1,70 +1,63 @@
 const User = require('../models/user.js')
 const bcrypt = require('bcryptjs')
 const generateToken = require('../middleware/generateToken.js')
+const userService = require('../services/user.service.js')
 
 async function addUser(req,res){
-    const {username, password} = {...req.body}
+    const {username, password} = {...req.body};
     try{
-        const user = await User.findOne({username:username})
-        if(user){
-            res.send('user-exists')
-            return
-        }
+      const user = await userService.getUserByUsername(username);
+      if(user) {
+        res.send('user-exists')
+        return
+      }
     }
-    catch(e){
-        res.send(e)
+    catch(err){
+        res.send(err.message)
         return
     }
-    const saltRounds = 10;
-    let user={}
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(password, salt, async (err, hash) => {
-            if (err) {
-            // Handle error
-            }
-            else {
-                user = new User({
-                    username:username, password:hash, type:'admin'
-                })
 
-                try{
-                    await user.save()
-                    res.status(201).send("success")
-                }
-                catch(e){
-                    res.status(400).send(e)
-                }
-            }
-        });
-    });
+    try {
+        await userService.addUser(username, password)
+        res.status(201).send("success")
+    } catch (err) {
+        console.log(err.message)
+        res.status(400).send(err)   
+    }
 }
 
 
 async function loginUser(req,res){
     const {username, password} = {...req.body}
 
+    // check if the use exist with the username, 
+    // if not send a response with a message
+    // if any error occurs in communicating with database 
+    // send a response with status code 401 and a error message
+    let user
     try{
-        const user = await User.findOne({username:username})
+        user = await userService.getUserByUsername(username)
         if(!user){
-            res.send()
+            res.send("user not found, please check your username")
             return
         }
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        let token
-        if (isPasswordValid) {
-            console.log("authorized")
-            token = generateToken(user)
-            res.send(token)
-        }
-        else {
-            console.log("unauthorized")
-            res.send();
-        }
     }
-    catch(e){
-        console.log("catch")
-        res.status(401).send(e)
+    catch(err){
+        res.status(401).send(err.message)
     }
+
+    // after the user with the username is fetched validate password entered by the user
+    // if successfully validated send a response with status code 200 and token generated
+    try{
+        const token = await userService.loginUser(password, user)
+        res.status(200).send({token:token})
+    }
+    catch(err){
+        console.log(err.message)
+        res.send(err.message)
+    }
+    
+    
 }
 
 module.exports = {

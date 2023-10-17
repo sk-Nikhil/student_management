@@ -3,7 +3,7 @@ const studentService = require('../services/student.service.js')
 
 async function addStudent(req,res){
     try {
-        await studentService.addStudent(req)
+        await studentService.addStudent(req.body)
         res.status(201).send("student added successfully");
       } catch (e) {
         res.status(400).send(e);
@@ -13,12 +13,18 @@ async function addStudent(req,res){
 async function getStudents(req,res) {
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
-  const skip = (page - 1) * limit;
 
   try {
+    // fetching total no of students present in the collection
     const totalStudents = await studentService.countStudents();
-    const students = await studentService.getStudents(skip, limit);
-
+    
+    // fetching students to be displayed according to the page no and the limit
+    const students = await studentService.getStudents(page, limit);
+    // storing data under variable student that is to be used
+    // students -> students records that is to be shown
+    // currentPage -> 
+    // totalPages ->  for pagination purpose
+    // totalEntries -> total records available in the database , use to display out of what amount of data we are displaying records
     const student = {
       students,
       currentPage: page,
@@ -31,27 +37,14 @@ async function getStudents(req,res) {
   }
 };
 
+// filtering student based on searchTerm 
 async function filterSearch(req,res){
-    const page = parseInt(req.query.page) || 1;
+  const page = parseInt(req.query.page) || 1;
   const limit = 5;
-  const skip = (page - 1) * limit;
-
-  const query = req.params.searchTerm;
-
-  const searchQuery = {
-    $or: [
-        // { S_No: { $eq: parseInt(query) } },
-        { name: { $regex: query, $options: "i" } },
-        { parent: { $regex: query, $options: "i" } },
-        { class: { $regex: query, $options: "i" } },
-        { address: { $regex: query, $options: "i" } },
-        { contact: { $regex: query, $options: "i" } },
-    ],
-  };
+  const searchTerm = req.params.searchTerm;
 
   try {
-    const students = await studentService.filteredStudents(searchQuery, skip, limit);
-
+    const students = await studentService.filteredStudents(searchTerm, page, limit);
     const student = {
       students,
       currentPage: page,
@@ -67,7 +60,7 @@ async function filterSearch(req,res){
 
 
 async function deleteStudent(req,res){
-    const id = req.params.S_No;
+    const id = req.params.id;
   try {
     const removeStudent = await studentService.deleteStudent(id);
     res.status(201).send(removeStudent);
