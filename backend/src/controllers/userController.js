@@ -38,12 +38,12 @@ async function loginUser(req,res){
     try{
         user = await userService.getUserByUsername(username)
         if(!user){
-            res.send("user not found, please check your username")
+            res.send({err:"user not found, please check your username"})
             return
         }
     }
     catch(err){
-        res.status(401).send(err.message)
+        res.status(401).send({err:err.message})
     }
 
     // after the user with the username is fetched validate password entered by the user
@@ -54,10 +54,8 @@ async function loginUser(req,res){
     }
     catch(err){
         console.log(err.message)
-        res.send(err.message)
+        res.send({err:err.message})
     }
-    
-    
 }
 
 module.exports = {

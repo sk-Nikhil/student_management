@@ -3,17 +3,23 @@ const jwt = require('jsonwebtoken')
 
 const tokenVerified = (req, res, next) => {
     const token = req.headers.authorization
-    try{
-        const decodedToken = jwt.verify(token, secretKey)
-        if(decodedToken.type === 'admin'){
-            next()
+    if(token) {
+        try{
+            const decodedToken = jwt.verify(token, secretKey)
+            if(decodedToken.type === 'admin'){
+                next()
+            }
+            else{
+                res.send({invalidToken:"unauthorized access"})
+            }
         }
-        else{
-            router.push('/signup')
+        catch(err){
+            console.log("token verification error", err.message)
+            res.send({invalidToken:err.message})
         }
     }
-    catch(e){
-        console.log("token verification error", e)
+    else{
+        res.send({invalidToken:"unauthorized access"})
     }
 }
 
