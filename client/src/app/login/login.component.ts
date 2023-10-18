@@ -25,7 +25,6 @@ export class LoginComponent{
   async login(){
     if(true){
       this.isValidUser = await this.authService.login(this.loginForm.value)
-      console.log(this.isValidUser)
       if(!this.isValidUser){
         this.errMsg = "please check your username and password again!!"
       }

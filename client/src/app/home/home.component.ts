@@ -86,10 +86,15 @@ export class HomeComponent implements OnInit{
     if(!this.searchTerm){
       this.dataService.getStudents(page)
       .then((response)=>{
-        this.currentPage = response.studentData.currentPage;
-        this.totalEntries = response.studentData.totalEntries;
-        this.dataService.updateStudentRecords(response.students);
-        this.totalPages = response.studentData.totalPages;
+        if(!response.invalidToken){
+          this.currentPage = response.studentData.currentPage;
+          this.totalEntries = response.studentData.totalEntries;
+          this.totalPages = response.studentData.totalPages;
+          // every time we request for new records of the student
+          // we update it in the studentrecords observable in data.service.ts
+          // from where we subscribe and display the student records
+          this.dataService.updateStudentRecords(response.students);
+        }
       })
     }
     else{

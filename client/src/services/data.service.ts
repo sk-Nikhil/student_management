@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core"
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { AxiosService } from "./axios.service";
+import { Router } from "@angular/router";
+import { AuthService } from "./auth.service";
 
 @Injectable({
     providedIn:'root'
@@ -8,7 +10,7 @@ import { AxiosService } from "./axios.service";
 
 export class DataService {
     students:any=[]
-    constructor( private axiosService:AxiosService){}
+    constructor( private axiosService:AxiosService, private router:Router, private authService:AuthService){}
 
     // show add-child component on the click of add-child button in home compoents
     // and on clicking backdrop on add-child component
@@ -68,13 +70,29 @@ export class DataService {
     // initializing student array on loading component
     async getStudents(page:Number){
         let studentData:any
+        let invalidToken:any
         await this.axiosService.get(`/getStudents?page=${page}`)
         .then((response)=>{
-            studentData = response.data;
-            this.students = response.data.students;
-            this.updateStudentRecords(this.students)
+            // here invalidToken is the error that arised due to the token authenthentication or received an empty token
+            // so if we do not have any error in token verification desired data is successfully fetched
+            if(!response.data.invalidToken) {
+                studentData = response.data;
+                this.students = response.data.students;
+                this.updateStudentRecords(this.students)
+            }
+            else{
+                invalidToken=response.data.invalidToken
+            }
         })
-        return {studentData, students:this.students};
+        if(!invalidToken)
+            return {studentData, students:this.students};
+        else{
+            // if we have any error in verifying token which may arise due to manually overriding token
+            // it will end the user-session and will be redirected to login page
+            this.authService.logout()
+            return {invalidToken}
+        }
+    
     }
 
 }
