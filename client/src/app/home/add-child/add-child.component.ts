@@ -25,24 +25,14 @@ export class AddChildComponent{
   async addStudent(){
     if(this.studentForm.valid){
       const id = this.generateRandomId(this.studentForm.get('name').value)
-      console.log(id)
-
       this.routerService.addStudent(id,this.studentForm.value)
       .then((response)=>{
-        if(response === 201) {
-          this.showDialog("student added successfully");
-          this.hideForm();
-        }
+        this.hideForm();
+        this.dataService.addInfoToast(response)
       })
     }
   }
 
-  showDialog(data:String){
-    this.dataService.updateModal(true, data);
-    setTimeout(()=>{
-      this.dataService.updateModal(false, '')
-    },2000)
-  }
 
   hideForm(){
     this.dataService.updateAddFormStatus(false);

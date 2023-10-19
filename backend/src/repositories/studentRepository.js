@@ -19,7 +19,8 @@ async function countStudents(){
     }
 };
 
-async function getStudents(skip, limit){
+async function getStudents(skip){
+    const limit = 5;
     try{
         var students = await Student.find().sort({id:-1}).skip(skip).limit(limit);
         return students;

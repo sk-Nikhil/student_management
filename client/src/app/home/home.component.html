@@ -6,7 +6,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>S.No</th>
+                    <th>Id</th>
                     <th>Name</th>
                     <th>Parent Name</th>
                     <th>Class</th>
@@ -44,10 +44,7 @@
         [totalPages]="totalPages"
           (pageChange)="onPageChange($event)"
         ></app-pagination>
-    
-        <div id="dialog" *ngIf="showModal">{{modalText}}</div>
 
-        <!-- <div id="dialog" *ngIf="showAddDialog">student added successfully</div> -->
     </div>
 </div>
 

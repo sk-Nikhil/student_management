@@ -3,14 +3,15 @@ import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { AxiosService } from "./axios.service";
 import { Router } from "@angular/router";
 import { AuthService } from "./auth.service";
-
+import { ToastService } from "angular-toastify";
+import { Subject } from "rxjs";
 @Injectable({
     providedIn:'root'
 })
 
 export class DataService {
     students:any=[]
-    constructor( private axiosService:AxiosService, private router:Router, private authService:AuthService){}
+    constructor( private axiosService:AxiosService, private router:Router, private authService:AuthService, private _toastService: ToastService){}
 
     // show add-child component on the click of add-child button in home compoents
     // and on clicking backdrop on add-child component
@@ -32,9 +33,13 @@ export class DataService {
     private StudentRecords = new BehaviorSubject<any>(this.students);
     StudentRecords$ = this.StudentRecords.asObservable();
 
+    private totalEntries = new Subject<any>();
+    totalEntries$ = this.totalEntries.asObservable();
+
     addStudent(data:any){
         this.students.unshift(data)
         this.updateStudentRecords(this.students)
+        this.updateTotalEntries(this.students.length)
     }
     
     // updating student record in local instance of students
@@ -59,12 +64,12 @@ export class DataService {
         this.showEditForm.next(data)
     }
 
-    updateModal(status:boolean, text:String){
-        this.showModal.next({status:status, text:text})
-    }
-
     updateStudentRecords(students:any){
         this.StudentRecords.next(students)
+    }
+
+    updateTotalEntries(data:any){
+        this.totalEntries.next(data)
     }
 
     // initializing student array on loading component
@@ -79,6 +84,7 @@ export class DataService {
                 studentData = response.data;
                 this.students = response.data.students;
                 this.updateStudentRecords(this.students)
+                this.updateTotalEntries(this.students.length)
             }
             else{
                 invalidToken=response.data.invalidToken
@@ -93,6 +99,10 @@ export class DataService {
             return {invalidToken}
         }
     
+    }
+
+    addInfoToast(message:any) {
+        this._toastService.info(message);
     }
 
 }

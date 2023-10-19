@@ -33,13 +33,12 @@ export class RouterService{
 
     async addStudent(id:String,studentData){
       const student = {id,...studentData};
-      var res:Number;
+      var res:String;
       
       await this.axiosService.post('/addStudent', student)
       .then(response => {
             this.dataService.addStudent(student)
-            console.log("added successfully");
-            res = response.status;
+            res = response.data;
       })
       return res;
     }
@@ -55,17 +54,18 @@ export class RouterService{
 
     async removeStudent(id:any, page:Number){
         await this.axiosService.delete(`/removeStudent/${id}`)
-        .then(()=>{
+        .then((response)=>{
             this.dataService.removeStudent(id, page)
-            return "removed";
+            console.log(response)
+            this.dataService.addInfoToast(` record has been removed successfully`)
         })
     }
 
     async updateStudent(student:any){
-        var res:Number;
+        var res:any;
         await this.axiosService.patch('/updateStudent', student)
         .then((response)=>{
-            res = response.status;
+            res = response.data;
             this.dataService.updateStudent(student);
         })
         return res;

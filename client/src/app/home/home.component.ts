@@ -44,6 +44,10 @@ export class HomeComponent implements OnInit{
       this.showEditForm = showEditForm;
     })
 
+    this.dataService.totalEntries$.subscribe((totalEntries)=>{
+      this.totalEntries = totalEntries;
+      this.totalPages = Math.ceil(totalEntries/5);
+    })
     // show modal on editing or adding student record
     this.dataService.showModal$.subscribe((showModal)=>{
       this.showModal = showModal.status;
@@ -66,8 +70,7 @@ export class HomeComponent implements OnInit{
   }
 
   async removeStudent(id:any, name:String){
-    await this.routerService.removeStudent(id, this.currentPage);
-    this.dataService.updateModal(true, `${name}'s record has been removed successfully`);
+    await this.routerService.removeStudent(id, this.currentPage)
   }
 
   // for pagination

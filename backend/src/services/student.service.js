@@ -4,9 +4,33 @@ async function addStudent(studentData){
     return studentRepository.addStudent(studentData);
 }
 
-async function getStudents(page, limit){
+async function getStudents(page){
+    const limit=5
     const skip = (page - 1) * limit;
-    return studentRepository.getStudents(skip, limit);
+
+    try{
+        // fetching total no of students present in the collection
+        const totalStudents = await studentRepository.countStudents()
+        const students =  await studentRepository.getStudents(skip, limit);
+        // storing data under variable student that is to be used
+        // students -> students records that is to be shown
+        // currentPage -> 
+        // totalPages ->  for pagination purpose
+        // totalEntries -> total records available in the database , use to display out of what amount of data we are displaying records
+        const student = {
+            students,
+            currentPage: page,
+            totalPages: Math.ceil(totalStudents / limit),
+            totalEntries:totalStudents
+        };
+        // console.log(student)
+        return student;
+    }
+    catch(err){
+        return err
+    }
+
+
 };
 
 // count no of students in the collection
@@ -15,7 +39,9 @@ async function countStudents(){
 };
 
 // filter students based on the search query
-async function filteredStudents(searchTerm, page, limit){
+async function filteredStudents(searchTerm, page){
+    const limit = 5;
+    const skip = (page - 1) * limit;
 
     // searchQuery, to filter data based on the searchTerm from named fields
     const searchQuery = {
@@ -28,8 +54,19 @@ async function filteredStudents(searchTerm, page, limit){
             { contact: { $regex: searchTerm, $options: "i" } },
         ],
     };
-    const skip = (page - 1) * limit;
-    return studentRepository.filteredStudents(searchQuery, skip, limit);
+    try{
+        const students =  await studentRepository.filteredStudents(searchQuery, skip, limit);
+        const student = {
+            students,
+            currentPage: page,
+            totalPages: Math.ceil(students.length / limit) + 1,
+        };
+        return student
+    }
+    catch(err){
+        return err
+    }
+
 };
 
 async function deleteStudent(id){

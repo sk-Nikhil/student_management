@@ -29,22 +29,10 @@ export class EditChildComponent implements OnInit{
       const student = {...this.student,...this.studentForm.value};
       this.routerService.updateStudent(student)
       .then(response=>{
-        if(response === 201) {
-          this.editDialog("student data updated successfully");
-        }
-        else{
-          this.editDialog("failed to update student data");
-        }
+        this.dataService.addInfoToast(response)
+        this.hideForm();
       })
     }
-    this.hideForm();
-  }
-
-  editDialog(data:String){
-    this.dataService.updateModal(true, data);
-    setTimeout(()=>{
-      this.dataService.updateModal(false, '')
-    },2000);
   }
 
   hideForm(){
