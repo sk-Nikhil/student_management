@@ -24,7 +24,10 @@ export class AddChildComponent{
 
   async addStudent(){
     if(this.studentForm.valid){
-      this.routerService.addStudent(this.studentForm.value)
+      const id = this.generateRandomId(this.studentForm.get('name').value)
+      console.log(id)
+
+      this.routerService.addStudent(id,this.studentForm.value)
       .then((response)=>{
         if(response === 201) {
           this.showDialog("student added successfully");
@@ -45,4 +48,19 @@ export class AddChildComponent{
     this.dataService.updateAddFormStatus(false);
     this.studentForm.reset();
   }
+
+  generateRandomId(name) {
+    // Use a cryptographic random number generator to ensure uniqueness
+    const randomArray = new Uint32Array(1);
+    window.crypto.getRandomValues(randomArray);
+    const randomValue = randomArray[0] % 1000000; // Ensure it's a 6-digit number
+  
+    // Convert the random value to a 6-digit string
+    const randomId = randomValue.toString().padStart(6, '0');
+  
+    // Take the first 3 characters of the name and concatenate with the random 6-digit ID
+    const namePart = name.slice(0, 3).toUpperCase();
+  
+    return namePart + randomId;
+}
 }

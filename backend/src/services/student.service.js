@@ -1,4 +1,4 @@
-const studentRepository = require('../repositories/studentRepository.js')
+const studentRepository = require('../repositories/studentRepository.js');
 
 async function addStudent(studentData){
     return studentRepository.addStudent(studentData);
@@ -12,7 +12,7 @@ async function getStudents(page, limit){
 // count no of students in the collection
 async function countStudents(){
     return studentRepository.countStudents();
-}
+};
 
 // filter students based on the search query
 async function filteredStudents(searchTerm, page, limit){
@@ -30,15 +30,15 @@ async function filteredStudents(searchTerm, page, limit){
     };
     const skip = (page - 1) * limit;
     return studentRepository.filteredStudents(searchQuery, skip, limit);
-}
+};
 
 async function deleteStudent(id){
     return studentRepository.deleteStudent(id);
-}
+};
 
 async function updateStudent(studentData){
     return studentRepository.updateStudent(studentData);
-}
+};
 
 module.exports = {
     addStudent,
@@ -47,4 +47,4 @@ module.exports = {
     filteredStudents,
     deleteStudent,
     updateStudent
-}
+};

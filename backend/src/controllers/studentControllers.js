@@ -88,4 +88,4 @@ module.exports = {
     filterSearch,
     deleteStudent,
     updateStudent
-}
+};

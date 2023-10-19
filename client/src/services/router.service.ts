@@ -31,8 +31,8 @@ export class RouterService{
         return error;
     }
 
-    async addStudent(studentData){
-      const student = {...studentData};
+    async addStudent(id:String,studentData){
+      const student = {id,...studentData};
       var res:Number;
       
       await this.axiosService.post('/addStudent', student)

@@ -11,10 +11,10 @@ router.patch("/updateStudent", verifyToken, studentController.updateStudent);
 
 
 router.get('/secret1', (req,res)=>{
-    console.log('secret1')
+    console.log('secret1');
 })
 router.get('/secret', (req,res)=>{
-    res.redirect('/secret1')
+    res.redirect('/secret1');
 })
 
 module.exports = router;

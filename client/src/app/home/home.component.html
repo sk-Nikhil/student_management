@@ -17,7 +17,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let student of students ; let i = index">
-                    <td>{{(currentPage-1)*5 + i+1}}</td>
+                    <td>{{student.id}}</td>
                     <td>{{student.name}}</td>
                     <td>{{student.parent}}</td>
                     <td>{{student.class}}</td>

@@ -8,7 +8,7 @@ async function addStudent(studentData){
     catch(e){
         throw Error("unable to add Student");
     }
-}
+};
 
 async function countStudents(){
     try{
@@ -17,17 +17,17 @@ async function countStudents(){
     catch(e){
         throw Error("unable to parse student collection");
     }
-}
+};
 
 async function getStudents(skip, limit){
     try{
-        var students = await Student.find().skip(skip).limit(limit);
+        var students = await Student.find().sort({id:-1}).skip(skip).limit(limit);
         return students;
     }
     catch(e){
         throw Error("unable to fetch student records");
     }
-}
+};
 
 async function filteredStudents(searchQuery, skip, limit){
     try{
@@ -35,9 +35,9 @@ async function filteredStudents(searchQuery, skip, limit){
         return students;
     }
     catch(e){
-        throw Error("unable to find students")
+        throw Error("unable to find students");
     }
-}
+};
 
 async function deleteStudent(id){
     try{
@@ -46,7 +46,7 @@ async function deleteStudent(id){
     catch(e){
         throw Error("Error while deleting a student record");
     }
-}
+};
 
 async function updateStudent(data){
     try{
@@ -57,9 +57,9 @@ async function updateStudent(data){
         return;
     }
     catch(e){
-        throw Error("unable to update student data",e)
+        throw Error("unable to update student data",e);
     }
-}
+};
 
 module.exports = {
     addStudent,
@@ -68,4 +68,4 @@ module.exports = {
     filteredStudents,
     deleteStudent,
     updateStudent
-}
+};
