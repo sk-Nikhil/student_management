@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import axios from 'axios'
 
 @Component({
   selector: 'app-login',
@@ -19,8 +20,13 @@ export class LoginComponent{
 
   // store the validity of the user
   // if the user details entered by user is valid
-  isValidUser:boolean=true
   errMsg:String
+  isValidUser:boolean;
+  // using passport js
+  // async login(){
+  //   await axios.post('http://localhost:3000/login', this.loginForm.value)
+  //   .then(response=>console.log(response))
+  // }
 
   async login(){
     if(true){

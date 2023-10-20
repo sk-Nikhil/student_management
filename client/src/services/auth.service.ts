@@ -39,28 +39,49 @@ export class AuthService{
         return promise;
     }
 
+    // async login(user:any){
+    //     let token:string;
+    //     await axios.post('http://localhost:3000/login', user).then((response)=>{
+    //         if(response.data.token){
+    //             token = response.data.token;
+    //             this.loggedIn = true;
+    //             sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
+    //             localStorage.setItem('token', token);
+    //             this.router.navigate(['/home'], {replaceUrl:true});
+    //             this.updateValidation(true);
+    //         }
+    //         else{
+    //             this.loggedIn = false;  
+    //             this.updateValidation(false);
+    //         }
+    //     })
+    //     if(token){
+    //         return true;
+    //     }
+    //     else{
+    //         return false;
+    //     }
+    // }
+
     async login(user:any){
-        let token:string;
+        let isValidUser:boolean;
         await axios.post('http://localhost:3000/login', user).then((response)=>{
-            if(response.data.token){
-                token = response.data.token;
+            console.log(response.data)
+            if(response.data.success){
                 this.loggedIn = true;
                 sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
-                localStorage.setItem('token', token);
+                // localStorage.setItem('token', token);
                 this.router.navigate(['/home'], {replaceUrl:true});
                 this.updateValidation(true);
+                isValidUser = true;
             }
             else{
                 this.loggedIn = false;  
                 this.updateValidation(false);
+                isValidUser = false;
             }
         })
-        if(token){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return isValidUser;
     }
 
     logout(){
