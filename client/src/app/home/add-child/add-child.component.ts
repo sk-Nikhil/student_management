@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter} from '@angular/core';
 import { DataService } from 'src/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterService } from 'src/services/router.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-child',
@@ -12,7 +13,7 @@ export class AddChildComponent{
   studentForm: FormGroup;
   @Output() updateStudent = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private dataService:DataService, private routerService:RouterService){
+  constructor(private fb: FormBuilder, private dataService:DataService, private routerService:RouterService, private router:Router){
     this.studentForm = this.fb.group({
       name: ['', Validators.required],
       parent: ['', Validators.required],
@@ -27,12 +28,18 @@ export class AddChildComponent{
       const id = this.generateRandomId(this.studentForm.get('name').value)
       this.routerService.addStudent(id,this.studentForm.value)
       .then((response)=>{
-        this.hideForm();
-        this.dataService.addInfoToast(response)
+        console.log(response)
+        if(!response.error){
+          this.hideForm();
+          this.dataService.addInfoToast(response);
+        }
+        else{
+          this.dataService.addInfoToast(response.error);
+          this.router.navigate(['/login']);
+        }
       })
     }
   }
-
 
   hideForm(){
     this.dataService.updateAddFormStatus(false);

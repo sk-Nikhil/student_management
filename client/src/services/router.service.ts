@@ -33,7 +33,7 @@ export class RouterService{
 
     async addStudent(id:String,studentData){
       const student = {id,...studentData};
-      var res:String;
+      var res:any;
       
       await this.axiosService.post('/addStudent', student)
       .then(response => {

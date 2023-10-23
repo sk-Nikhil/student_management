@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit{
     if(!this.searchTerm){
       this.dataService.getStudents(page)
       .then((response)=>{
-        if(!response.invalidToken){
+        if(!response.error){
           this.currentPage = response.studentData.currentPage;
           this.totalEntries = response.studentData.totalEntries;
           this.totalPages = response.studentData.totalPages;
@@ -97,6 +97,9 @@ export class HomeComponent implements OnInit{
           // we update it in the studentrecords observable in data.service.ts
           // from where we subscribe and display the student records
           this.dataService.updateStudentRecords(response.students);
+        }
+        else{
+          this.dataService.addInfoToast(response.error)
         }
       })
     }

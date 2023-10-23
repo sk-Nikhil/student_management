@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataService } from 'src/services/data.service';
 import { RouterService } from 'src/services/router.service';
 
@@ -12,7 +13,7 @@ export class EditChildComponent implements OnInit{
   studentForm: FormGroup;
   @Input('editStudent') student:any;
 
-  constructor(private fb: FormBuilder, private dataService:DataService, private routerService:RouterService){}
+  constructor(private fb: FormBuilder, private dataService:DataService, private routerService:RouterService, private router:Router){}
 
   ngOnInit(){
     this.studentForm = this.fb.group({
@@ -29,8 +30,15 @@ export class EditChildComponent implements OnInit{
       const student = {...this.student,...this.studentForm.value};
       this.routerService.updateStudent(student)
       .then(response=>{
-        this.dataService.addInfoToast(response)
-        this.hideForm();
+        if(response.error){
+          this.hideForm();
+          this.dataService.addInfoToast(response.error)
+          this.router.navigate(['/login'])
+        }
+        else{
+          this.dataService.addInfoToast(response)
+          this.hideForm();
+        }
       })
     }
   }

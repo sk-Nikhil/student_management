@@ -8,7 +8,7 @@ import axios from 'axios'
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent{
+export class LoginComponent implements OnInit{
   loginForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private authService:AuthService) {
@@ -18,15 +18,14 @@ export class LoginComponent{
     });
   }
 
+  ngOnInit(): void {
+      this.authService.logout()
+  }
+
   // store the validity of the user
   // if the user details entered by user is valid
   errMsg:String
   isValidUser:boolean;
-  // using passport js
-  // async login(){
-  //   await axios.post('http://localhost:3000/login', this.loginForm.value)
-  //   .then(response=>console.log(response))
-  // }
 
   async login(){
     if(true){

@@ -29,8 +29,6 @@ async function getStudents(page){
     catch(err){
         return err
     }
-
-
 };
 
 // count no of students in the collection

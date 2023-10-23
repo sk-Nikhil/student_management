@@ -3,8 +3,9 @@ const app = express();
 const cors = require('cors');
 const dotenv = require('dotenv');
 const router = require('./router.js')
-const passport = require('./passport-config.js');
-const session = require('express-session');
+const passport = require('passport');   //passport
+const initializePassport = require('./passport-config.js')
+const session = require('express-session');         //express-session
 require('./db/mongoose');
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: f
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+initializePassport(passport)
 
 app.use(express.json());
 app.use(router);

@@ -1,4 +1,3 @@
-// const Student = require("../models/student");
 const studentService = require('../services/student.service.js')
 
 async function addStudent(req,res){
@@ -7,7 +6,7 @@ async function addStudent(req,res){
       res.status(201).send("student added successfully");
     }
   catch (err) {
-    res.status(400).send(err.message);
+    res.status(400).send({error:err.message});
   }
 };
 
@@ -51,7 +50,6 @@ async function deleteStudent(req,res){
   }
 }
 
-
 // updating student
 // finding student with S_No which is unique id for student records
 async function updateStudent(req,res){
@@ -60,7 +58,7 @@ async function updateStudent(req,res){
     res.send("updated successfully");
   }
   catch (err) {
-    res.status(400).send(err.message);
+    res.status(400).send({error:err.message});
   }
   res.send();
 }

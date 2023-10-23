@@ -39,43 +39,32 @@ export class AuthService{
         return promise;
     }
 
-    // async login(user:any){
-    //     let token:string;
-    //     await axios.post('http://localhost:3000/login', user).then((response)=>{
-    //         if(response.data.token){
-    //             token = response.data.token;
-    //             this.loggedIn = true;
-    //             sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
-    //             localStorage.setItem('token', token);
-    //             this.router.navigate(['/home'], {replaceUrl:true});
-    //             this.updateValidation(true);
-    //         }
-    //         else{
-    //             this.loggedIn = false;  
-    //             this.updateValidation(false);
-    //         }
-    //     })
-    //     if(token){
-    //         return true;
-    //     }
-    //     else{
-    //         return false;
-    //     }
-    // }
+    private token: string;
+
+    private setToken(token: string) {
+        this.token = token;
+        localStorage.setItem('token', token);
+    }
+
+    getToken(): string {
+        return this.token;
+    }
 
     async login(user:any){
         let isValidUser:boolean;
         await axios.post('http://localhost:3000/login', user).then((response)=>{
-            console.log(response.data)
             if(response.data.success){
                 this.loggedIn = true;
+
+                this.setToken(response.data.success)
                 sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
-                // localStorage.setItem('token', token);
+                
                 this.router.navigate(['/home'], {replaceUrl:true});
                 this.updateValidation(true);
                 isValidUser = true;
             }
             else{
+                console.log(response)
                 this.loggedIn = false;  
                 this.updateValidation(false);
                 isValidUser = false;

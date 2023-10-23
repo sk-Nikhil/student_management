@@ -75,28 +75,28 @@ export class DataService {
     // initializing student array on loading component
     async getStudents(page:Number){
         let studentData:any
-        let invalidToken:any
+        let error:any
         await this.axiosService.get(`/getStudents?page=${page}`)
         .then((response)=>{
             // here invalidToken is the error that arised due to the token authenthentication or received an empty token
             // so if we do not have any error in token verification desired data is successfully fetched
-            if(!response.data.invalidToken) {
+            if(!response.data.error) {
                 studentData = response.data;
                 this.students = response.data.students;
                 this.updateStudentRecords(this.students)
                 this.updateTotalEntries(this.students.length)
             }
             else{
-                invalidToken=response.data.invalidToken
+                error=response.data.error
             }
         })
-        if(!invalidToken)
+        if(!error)
             return {studentData, students:this.students};
         else{
             // if we have any error in verifying token which may arise due to manually overriding token
             // it will end the user-session and will be redirected to login page
             this.authService.logout()
-            return {invalidToken}
+            return {error}
         }
     
     }
