@@ -44,7 +44,7 @@ async function filteredStudents(searchTerm, page){
     // searchQuery, to filter data based on the searchTerm from named fields
     const searchQuery = {
         $or: [
-            // { S_No: { $eq: parseInt(searchTerm) } },
+            { id: { $regex: searchTerm, $options: "i" } },
             { name: { $regex: searchTerm, $options: "i" } },
             { parent: { $regex: searchTerm, $options: "i" } },
             { class: { $regex: searchTerm, $options: "i" } },

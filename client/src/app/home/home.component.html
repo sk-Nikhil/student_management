@@ -2,7 +2,13 @@
 
 <div class="responsive">
     <div class="fluid-container">
-        <input type="text" id="searchInput" [(ngModel)]="searchTerm" placeholder="Search..." (input)="search()">
+        <!-- <input type="text" id="searchInput" [(ngModel)]="searchTerm" placeholder="Search..." (input)="search()"> -->
+        <form class="search">
+            <input type="text" placeholder="Search" class="searchinput" name="search" [(ngModel)]="searchTerm" (input)="search()" />
+            <button type="button" class="searchbutton">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
         <table>
             <thead>
                 <tr>

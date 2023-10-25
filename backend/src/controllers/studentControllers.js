@@ -2,7 +2,7 @@ const studentService = require('../services/student.service.js')
 
 async function addStudent(req,res){
   try {
-      await studentService.addStudent(req.body)
+      await studentService.addStudent(req.body);
       res.status(201).send("student added successfully");
     }
   catch (err) {
@@ -19,8 +19,8 @@ async function getStudents(req,res) {
     res.send(students);
   }
   catch(err){
-    console.log(err.message)
-    res.send(err.message)
+    console.log(err.message);
+    res.send(err.message);
   }
 };
 
@@ -33,7 +33,7 @@ async function filterSearch(req,res){
     res.send(students);
   }
   catch(err) {
-    console.log(err.message)
+    console.log(err.message);
     res.status(401).send(err.message);
   }
 };

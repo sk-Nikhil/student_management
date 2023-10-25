@@ -10,7 +10,7 @@ async function addUser(req,res){
       }
     }
     catch(err){
-        console.log(err.msg)
+        console.log(err.msg);
         res.send(err.message);
         return;
     }
