@@ -2,8 +2,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height:4rem;
-    background-color: rgba(196, 187, 187, 0.524);
+    height:8%;
+    background-color: rgba(247, 219, 250, 0.524);
+    /* background-color: transparent; */
     padding: 10px;
     color:black;
 }
@@ -61,4 +62,18 @@
     height:30px;
     background-color: black;
     border-radius: 50%;
+}
+
+h3{
+    color:darkgrey;
+}
+
+#toggleButton{
+    text-decoration: none;
+    color:grey;
+    margin-right: 1vw;
+    font-size: 1.5rem;
+    padding:5px 12px;
+    /* border:1px solid darkgrey; */
+    border-radius: 5px;
 }

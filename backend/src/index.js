@@ -1,19 +1,24 @@
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const dotenv = require('dotenv');
+const router = require('./router.js')
+const passport = require('passport');   //passport
+const initializePassport = require('./passport-config.js')
+const session = require('express-session');         //express-session
+require('./db/mongoose');
+dotenv.config();
 
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const studentRouter = require('./apis/student.js')
-const userRouter = require('./apis/user.js')
+app.use(cors());
+app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: false }));
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+initializePassport(passport)
 
-require('./db/mongoose')
+app.use(express.json());
+app.use(router);
 
-const port = 3000
-app.use(cors())
-app.use(express.json())
-
-app.use(studentRouter)
-app.use(userRouter)
-
-app.listen(port, () => {
-    console.log('Server is up on port ' + port)
-})
+app.listen(process.env.PORT, () => {
+    console.log(`Server is up on port ${process.env.PORT}`);
+});

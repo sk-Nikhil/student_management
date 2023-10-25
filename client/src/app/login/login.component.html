@@ -1,40 +1,28 @@
-<!-- <div class="login-container">
-    <h2>Login</h2>
-    <form (submit)="login()">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required [(ngModel)]="username" (input)="checkInputValidation()">
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required [(ngModel)]="password">
-        </div>
-        <p *ngIf="!isValid" style="color:red">please check your username and password again!!</p>
-        <button class="login-btn" type="submit">Login</button>
-    </form>
-</div> -->
-
-
 
 <div id="container">
-    <form (submit)="login()">
+    <form [formGroup]="loginForm" (submit)="login()">
         <div id="heading">
             <h1>Login</h1>
         </div>
         <div class="form-group">
             <label for="username">Username : </label>
-            <input type="username" id="username" name="username" class="form-control" [(ngModel)]="username" (input)="checkInputValidation()">
+            <input type="username" id="username" class="form-control" formControlName="username" (input)="clear()">
         </div>
+        <div class = "error" *ngIf="loginForm.get('username').hasError('required') && loginForm.get('username').touched">username is required</div>
+        <div class = "error" *ngIf="loginForm.get('username').hasError('email') && loginForm.get('username').touched">Invalid email format</div>
 
         <div class="form-group">
             <label for="password">Password : </label>
-            <input type="password" id="password" class="form-control" name="password" [(ngModel)]="password" >
+            <input type="password" id="password" class="form-control" formControlName="password" (input)="clear()">
         </div>
 
-        <p id="error" *ngIf="!isValid">please check your username and password again!!</p>
+        <p id="error" *ngIf="!isValidUser">{{errMsg}}</p>
         <div>
             <a href="">forgot your password</a>
         </div>
-        <button class="btn btn-primary">Sign In</button>
+        <button class="btn btn-primary" [disabled]="loginForm.invalid">Sign In</button>
     </form>
+
+
+    
 </div>

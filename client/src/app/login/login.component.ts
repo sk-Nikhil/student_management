@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { DataService } from 'src/services/data.service';
 import { AuthService } from 'src/services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import axios from 'axios'
 
 @Component({
   selector: 'app-login',
@@ -9,36 +9,36 @@ import { AuthService } from 'src/services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit{
-  constructor(private dataService:DataService, private authService:AuthService, private router:Router){}
+  loginForm: FormGroup;
 
-  username:string = ""
-  password:string = ""
-  isValid:boolean=true
-
-  ngOnInit(){
+  constructor(private formBuilder: FormBuilder, private authService:AuthService) {
+    this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
   }
+
+  ngOnInit(): void {
+      this.authService.logout()
+  }
+
+  // store the validity of the user
+  // if the user details entered by user is valid
+  errMsg:String
+  isValidUser:boolean;
 
   async login(){
-
-    const user = {
-      username: this.username,
-      password:this.password
+    if(true){
+      this.isValidUser = await this.authService.login(this.loginForm.value)
+      if(!this.isValidUser){
+        this.errMsg = "please check your username and password again!!"
+      }
+      this.loginForm.reset()
     }
-    
-    await this.authService.login(user)
-    this.authService.isValidUser$.subscribe((isValidUser)=>{
-      this.isValid = isValidUser
-    })
-    // localStorage.setItem('isAuthenticated',this.isValid.toString())
-    
-    this.username = ''
-    this.password = ''
   }
 
-  checkInputValidation(){
-    if(!this.username || !this.password) {
-      this.isValid = true
-    }
+  clear(){
+    this.errMsg = ''
   }
 
 }

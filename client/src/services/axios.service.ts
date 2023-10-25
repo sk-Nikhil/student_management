@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import axios from 'axios';
 
 @Injectable({
@@ -10,12 +11,16 @@ export class AxiosService {
     baseURL: 'http://localhost:3000',
   });
 
-  constructor() {
+  constructor(private router:Router) {
     this.axiosInstance.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem('token');
         if (token) {
-          config.headers['Authorization'] = `${token}`;
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        else{
+          console.log("unexpected error occured")
+          this.router.navigate(['/login'])
         }
         return config;
       },

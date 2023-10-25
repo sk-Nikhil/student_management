@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataService } from 'src/services/data.service';
-import axios from 'axios'
-import { AxiosService } from 'src/services/axios.service';
+import { RouterService } from 'src/services/router.service';
 
 @Component({
   selector: 'app-edit-child',
@@ -10,19 +10,12 @@ import { AxiosService } from 'src/services/axios.service';
   styleUrls: ['./edit-child.component.css']
 })
 export class EditChildComponent implements OnInit{
-
   studentForm: FormGroup;
-  editForm:boolean=false
+  @Input('editStudent') student:any;
 
-  @Input('editStudent') student
-
-  constructor(private fb: FormBuilder, private dataService:DataService, private axiosService:AxiosService){}
+  constructor(private fb: FormBuilder, private dataService:DataService, private routerService:RouterService, private router:Router){}
 
   ngOnInit(){
-    this.dataService.canEdit$.subscribe((canEdit)=>{
-      this.editForm = canEdit
-    })
-
     this.studentForm = this.fb.group({
       name: new FormControl({ value: `${this.student.name}`, disabled: true }),
       parent: new FormControl({ value: `${this.student.parent}`, disabled: true }),
@@ -32,31 +25,26 @@ export class EditChildComponent implements OnInit{
     });
   }
 
-
   async submitForm(){
     if(this.studentForm.valid){
-      console.log("valid")
-      const student = {...this.student,...this.studentForm.value,}
-      // await axios.patch('http://localhost:3000/updateStudent', student)
-      await this.axiosService.patch('/updateStudent', student)
-      .then((response)=>{
-
-        this.dataService.updateStudent(student)
+      const student = {...this.student,...this.studentForm.value};
+      this.routerService.updateStudent(student)
+      .then(response=>{
+        if(response.error){
+          this.hideForm();
+          this.dataService.addInfoToast(response.error)
+          this.router.navigate(['/login'])
+        }
+        else{
+          this.dataService.addInfoToast(response)
+          this.hideForm();
+        }
       })
     }
-    this.editDialog()
-    this.hideForm()
-  }
-
-  editDialog(){
-    this.dataService.updateEditDialogStatus(true)
-    setTimeout(()=>{
-      this.dataService.updateEditDialogStatus(false)
-    },2000)
   }
 
   hideForm(){
     this.studentForm.reset();
-    this.dataService.updateEditFormStatus(false)
+    this.dataService.updateEditFormStatus(false);
   }
 }

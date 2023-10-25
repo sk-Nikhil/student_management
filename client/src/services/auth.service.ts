@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import axios from 'axios'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-
 import { AxiosService } from './axios.service';
 
 @Injectable({
@@ -15,7 +14,6 @@ export class AuthService{
     loggedIn = this.getStatus();
     getStatus()
     {
-        // const s = localStorage.getItem('isLogged');
         const s = sessionStorage.getItem('isLogged')
         if(s != undefined)
         {
@@ -25,11 +23,7 @@ export class AuthService{
                 return false;
         }
         else 
-        {
-            // localStorage.setItem('isLogged', 'false');
-            // sessionStorage.setItem('isLogged', 'false')
             return false;
-        }
 
     }
 
@@ -38,79 +32,57 @@ export class AuthService{
 
     isAuthenticated(){
         const promise = new Promise(
-            (resolve, reject)=>{
-                resolve(this.loggedIn)
+            (resolve)=>{
+                resolve(this.loggedIn);
             }
         )
-        return promise
+        return promise;
     }
 
-    // async login(user){
-    //     await axios.post('http://localhost:3000/login', user).then((response)=>{
-    //         console.log(response.data)
-    //         if(response.data !== 'authorized'){
-    //             this.loggedIn = false;
-    //             localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
+    private token: string;
 
-    //             this.updateValidation(false)
-    //         }
-    //         else{
-    //             this.loggedIn = true
-    //             this.isValidUser.next(true)
-    //             localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
+    private setToken(token: string) {
+        this.token = token;
+        localStorage.setItem('token', token);
+    }
 
-    //             this.router.navigate(['/home'])
-    //             this.updateValidation(true)
-    //         }
- 
+    getToken(): string {
+        return this.token;
+    }
 
-    //     })
-    // }
-
-    async login(user){
+    async login(user:any){
+        let isValidUser:boolean;
         await axios.post('http://localhost:3000/login', user).then((response)=>{
-            const token = response.data
-            console.log("token",token)
-            if(token){
-                this.loggedIn = true
-                this.isValidUser.next(true)
-                // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
+            if(response.data.success){
+                this.loggedIn = true;
+
+                this.setToken(response.data.success)
                 sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn)); 
-
-                // adding token to ls
-                localStorage.setItem('token', token)     
-
-                this.router.navigate(['/home'])
-                this.updateValidation(true)
-
+                
+                this.router.navigate(['/home'], {replaceUrl:true});
+                this.updateValidation(true);
+                isValidUser = true;
             }
             else{
-                this.loggedIn = false;
-                // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
-                sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn));    
-                this.updateValidation(false)
+                console.log(response)
+                this.loggedIn = false;  
+                this.updateValidation(false);
+                isValidUser = false;
             }
- 
-
         })
+        return isValidUser;
     }
 
-
     logout(){
-        this.router.navigate(['/'])
-        this.loggedIn = false
-        // localStorage.setItem('isLogged', JSON.stringify(this.loggedIn));
-        // sessionStorage.setItem('isLogged', JSON.stringify(this.loggedIn));  
-        sessionStorage.removeItem('isLogged')   
+        this.router.navigate(['/']);
+        this.updateValidation(false);
+        sessionStorage.removeItem('isLogged');   
+        localStorage.removeItem('token');
         
     }
 
-    getUserValidation(){
-        return this.isValidUser
-    }
-
-    updateValidation(data){
-        this.isValidUser.next(data)
+    updateValidation(data:boolean){
+        this.isValidUser.next(data);
     }
 
 }

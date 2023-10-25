@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ToastService, AngularToastifyModule } from 'angular-toastify';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -12,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { AddChildComponent } from './home/add-child/add-child.component';
 import { PaginationComponent } from './home/pagination/pagination.component';
 import { EditChildComponent } from './home/edit-child/edit-child.component';
+import { SignupComponent } from './signup/signup.component';
 
 // import { DataService } from 'src/services/data.service';
 // import { AuthService } from 'src/services/auth.service';
@@ -20,6 +22,7 @@ import { AuthGuard } from 'src/services/auth-guard.service';
 const router:Routes=[
   {path:'', component:LoginComponent},
   {path:'login', component:LoginComponent},
+  {path:'signup', component:SignupComponent},
   {path:'home', component:HomeComponent, canActivate:[AuthGuard]}
 
   // {path:'**', redirectTo:'not-found'}
@@ -33,7 +36,8 @@ const router:Routes=[
     HomeComponent,
     AddChildComponent,
     PaginationComponent,
-    EditChildComponent
+    EditChildComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,8 +45,9 @@ const router:Routes=[
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AngularToastifyModule,
   ],
-  providers: [],
+  providers: [ToastService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

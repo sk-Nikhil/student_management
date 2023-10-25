@@ -6,4 +6,6 @@
             <a routerLink="/" (click)="logout()">Logout</a>
         </div>
     </div>
+
+    <a *ngIf="!isAuthenticated" [routerLink]="getDynamicRouterLink()" id="toggleButton">{{buttonContent}}</a>
 </div>

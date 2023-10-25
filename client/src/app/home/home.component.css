@@ -1,16 +1,24 @@
 #addChild{
     position: absolute;
     right:0;
-    margin:3% 2%;
+    margin:2% 2%;
     padding:5px 10px;
     border-radius:15px;
     background-color: aqua;
 }
 
 .fluid-container{
+    position: relative;
     width:60%;
     margin:100px auto 10px;
+}
 
+.responsive{
+    display: flex;
+    justify-content: center;
+    background-image: url("https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=1548&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-position: bottom;
+    height:84vh;
 }
 
 .edit{
@@ -24,9 +32,11 @@
 table {
     position: relative;
     width: 100%;
-    border-collapse: collapse;
     margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
     overflow: scroll;
+    background-color: white;
 }
 
 /* Style table header */
@@ -48,16 +58,10 @@ td {
     border: 1px solid #ccc;
 }
 
-#searchInput{
-    padding:5px 10px;
-    border-radius:10px;
-    margin-bottom:5px;
-    float: right;
-}
-
 #pagination{
-    float:right;
-    margin-top:10px;
+    position: absolute;
+    right:0;
+    margin-top: 10px;
 }
 
 #entries{
@@ -65,12 +69,58 @@ td {
     margin-top:10px;
 }
 
-#dialog{
-    position: absolute;
-    top:5rem;
-    left:1rem;
-    padding:10px;
-    border-radius: 10px;
-    background-color: rgb(92, 207, 92);
+/* download */
+.download-button {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
 
-}
+  .search{
+    display: inline-flex;
+    float: right;
+    background-color: #501566;
+    color:white;
+    padding:10px;
+    border-radius: 4px;
+    border:1px solid black;
+    margin-bottom:5px;
+  }
+
+  .search :is(input, button){
+    background:transparent;
+    color:inherit;
+    border:none;
+    outline:none;
+  }
+
+  .searchinput{
+    width:0;
+    transition:width 0.5s;
+  }
+
+  .searchbutton{
+    display: grid;
+    place-items: center;
+    width:25px;
+    height:25px;
+    cursor:pointer;
+    transition:color 0.25s;
+  }
+
+  .searchbutton:hover{
+    color:#e3e3e3;
+  }
+
+  .search:focus-within input{
+    width:200px;
+  }
+
+  ::placeholder{
+    font:inherit;
+    color:#e3e3e3;
+  }
